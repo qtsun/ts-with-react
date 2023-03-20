@@ -3,11 +3,12 @@ import logo from './logo.svg';
 import Hello from './components/Hello'
 import MouseTracker from './components/MouseTracker';
 import LikeButton from './components/LikeButton';
-
+import useMousePosition from './hooks/useMousePosition';
 import './App.css';
 
 const App: React.FC = () => {
   const [show, setShow] = useState(true)
+  const positions = useMousePosition()
   return (
     <div className="App">
       <header className="App-header">
@@ -16,6 +17,8 @@ const App: React.FC = () => {
          <button onClick={() => {setShow(!show)}}>Toggle Tracker</button>
         </p>
         <Hello />
+        <p>X: {positions.x}, Y: {positions.y}</p>
+
         <LikeButton />
         {/* {show && <MouseTracker />} */}
         <a

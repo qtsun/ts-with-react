@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
+import useMousePosition from "../hooks/useMousePosition";
 const LikeButton: React.FC = () =>{
     const [like, setLike] = useState(0)
+    const positions = useMousePosition()
     const [on, setOn] = useState(true)
     useEffect(() => {
         console.log('document title is running')
@@ -9,6 +11,7 @@ const LikeButton: React.FC = () =>{
     },[like, on])
     return (
         <>
+        <h1>X: {positions.x}, Y: {positions.y}</h1>
         <button onClick={() => {setLike(like + 1)}}>
             {like} 👍
         </button>
