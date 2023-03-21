@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useTransition} from 'react';
 import logo from './logo.svg';
 import Hello from './components/Hello'
 // import MouseTracker from './components/MouseTracker';
@@ -28,6 +28,17 @@ const themes: IThemeProps = {
 export const ThemeContext = React.createContext(themes.dark)
 const App: React.FC = () => {
   const [show, setShow] = useState(true)
+  const [input, setInput] = useState('')
+  const [searchData, setSearchData] = useState<number[]>([])
+  const [isPending, startTransition ] = useTransition()
+  const updateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setInput(value)
+    startTransition(() => {
+      const arr = Array.from({length: 10000}, (_,i)=> new Date().getTime() + 1)
+      setSearchData(arr)
+    })   
+  }
   const positions = useMousePosition()
   const [ data , loading ] = useURLLoader('https://dog.ceo/api/breeds/image/random', [show])
   const dogResult = data as IShowResult
@@ -41,8 +52,13 @@ const App: React.FC = () => {
         </p>
         <Hello />
         <p>X: {positions.x}, Y: {positions.y}</p>
+        <input type="text" value={input} onChange={updateInput} />
+        {isPending && <h1>⏳</h1>}
+        {searchData.map(d => 
+          <option key={d}>{d}</option>
+          )}
         {loading ? <p>🐕 读取中</p> : <img src={dogResult && dogResult.message} alt=""/>}
-        <LikeButton />
+        {/* <LikeButton /> */}
         {/* {show && <MouseTracker />} */}
         <a
           className="App-link"
