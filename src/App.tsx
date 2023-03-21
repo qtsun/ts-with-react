@@ -1,10 +1,12 @@
-import React, {useEffect, useState, useTransition} from 'react';
+import React, {useEffect, useState, useTransition, Suspense} from 'react';
 import logo from './logo.svg';
 import Hello from './components/Hello'
 // import MouseTracker from './components/MouseTracker';
 import LikeButton from './components/LikeButton';
 import useMousePosition from './hooks/useMousePosition';
 import useURLLoader from './hooks/useURLLoader';
+import DogShow from './components/DogShow'
+import Todo from './components/Todo'
 import './App.css';
 
 interface IShowResult {
@@ -47,6 +49,12 @@ const App: React.FC = () => {
       <ThemeContext.Provider value={themes.dark} >
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <Suspense fallback={<h1>Loading dog image ...</h1>}>
+          <DogShow/>
+        </Suspense>
+        <Suspense fallback={<h1>Loading todo data...</h1>}>
+          <Todo />
+        </Suspense>
         <p>
          <button onClick={() => {setShow(!show)}}>Toggle Tracker</button>
         </p>
